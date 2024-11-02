@@ -9,6 +9,7 @@ import {
   AlertTriangle,
   Battery,
   ThermometerSun,
+  Link,
 } from "lucide-react";
 import {
   LineChart,
@@ -145,7 +146,9 @@ const FleetDashboard: React.FC = () => {
         <div className="flex space-x-4">
           <Button variant="ghost">Routes</Button>
           <Button variant="ghost">Vehicles</Button>
-          <Button variant="ghost">Drivers</Button>
+          <a href="/drivers">
+            <Button variant="ghost">Drivers</Button>
+          </a>
           <Button variant="ghost">Reports</Button>
         </div>
       </div>
