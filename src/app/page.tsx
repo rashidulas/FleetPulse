@@ -23,7 +23,7 @@ export default function Home() {
           <SignedOut>
             <SignInButton>
               <button
-                className="mt-5 py-3 px-6 bg-[#f87315] text-white rounded-lg text-lg font-semibold shadow-lg hover:bg-orange-800 hover:shadow-orange-300 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center"
+                className="mt-5 py-3 px-6 bg-[#f87315] text-black rounded-lg text-lg font-semibold shadow-lg hover:bg-orange-800 hover:shadow-orange-300 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center"
               >
                 Get Started
               </button>
