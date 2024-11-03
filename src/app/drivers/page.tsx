@@ -102,7 +102,7 @@ export default function DriversPage() {
           alertsToday: driverMetrics.alertsToday,
         }),
       });
-      const data = await response.json();
+      const data: { suggestions?: string } = await response.json();
       if (data.suggestions) {
         setSuggestions(data.suggestions);
       } else {
@@ -130,52 +130,51 @@ export default function DriversPage() {
 
 
   return (
-    <div className="bg-white p-8">
+    <div className="bg-[#1B1F2B] text-gray-100 p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-semibold">Driver Analytics</h1>
+        <h1 className="text-4xl font-semibold text-gray-100">Driver Analytics</h1>
         <div className="flex space-x-4">
           <a href="/dashboard">
-            <Button variant="ghost">Overview</Button>
+            <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Overview</Button>
           </a>
-          <Button variant="ghost">Performance</Button>
-          <Button variant="ghost">Reports</Button>
-          <Button variant="ghost">Settings</Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Performance</Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Reports</Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Settings</Button>
         </div>
       </div>
 
       {/* Driver Profile Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <Card className="md:col-span-2">
-          <CardContent className="pt-6">
+        <Card className="md:col-span-2 bg-[#1E2433] border-[#2D3343]">
+        <CardContent className="pt-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-gray-600" />
+              <div className="w-16 h-16 bg-[#2A2F3B] rounded-full flex items-center justify-center">
+                <User className="w-8 h-8 text-teal-400" />
               </div>
               <div>
-                <h2 className="text-xl font-bold">{driverMetrics.name}</h2>
-                <p className="text-sm text-gray-600">
-                  ID: {driverMetrics.id} • Experience:{" "}
-                  {driverMetrics.experience} years
+              <h2 className="text-xl font-bold text-gray-100">{driverMetrics.name}</h2>
+                <p className="text-sm text-gray-400">
+                  ID: {driverMetrics.id} • Experience: {driverMetrics.experience} years
                 </p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-green-50 p-3 rounded-lg">
+            <div className="bg-[#2A2F3B] p-3 rounded-lg border border-[#3A3F4B]">
                 <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-green-600" />
-                  <span className="text-sm">Safety Rank</span>
+                  <Shield className="w-4 h-4 text-teal-400" />
+                  <span className="text-sm text-gray-300">Safety Rank</span>
                 </div>
-                <span className="text-xl font-bold text-green-700">
+                <span className="text-xl font-bold text-teal-400">
                   #{driverMetrics.overallRank}
                 </span>
               </div>
-              <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="bg-[#2A2F3B] p-3 rounded-lg border border-[#3A3F4B]">
                 <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm">Total Trips</span>
+                  <Award className="w-4 h-4 text-teal-400" />
+                  <span className="text-sm text-gray-300">Total Trips</span>
                 </div>
-                <span className="text-xl font-bold text-blue-700">
+                <span className="text-xl font-bold text-teal-400">
                   {driverMetrics.totalTrips}
                 </span>
               </div>
@@ -184,34 +183,34 @@ export default function DriversPage() {
         </Card>
 
         {/* Key Performance Indicators */}
-        <Card>
+        <Card className="bg-[#1E2433] border-[#2D3343]">
           <CardContent className="pt-6">
-            <h3 className="font-medium mb-4">Performance Scores</h3>
+            <h3 className="font-medium mb-4 text-gray-300">Performance Scores</h3>
             <div className="space-y-3">
               <div>
                 <div className="flex justify-between mb-1">
-                  <span className="text-sm">Safety</span>
-                  <span className="text-sm font-medium">
+                  <span className="text-sm text-gray-400">Safety</span>
+                  <span className="text-sm font-medium text-teal-400">
                     {driverMetrics.safetyScore}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#1B1F2B] rounded-full h-2">
                   <div
-                    className="bg-green-500 h-2 rounded-full"
+                    className="bg-teal-500 h-2 rounded-full"
                     style={{ width: `${driverMetrics.safetyScore}%` }}
                   />
                 </div>
               </div>
               <div>
                 <div className="flex justify-between mb-1">
-                  <span className="text-sm">Eco-Driving</span>
-                  <span className="text-sm font-medium">
+                  <span className="text-sm text-gray-400">Eco-Driving</span>
+                  <span className="text-sm font-medium text-teal-400">
                     {driverMetrics.ecoScore}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#1B1F2B] rounded-full h-2">
                   <div
-                    className="bg-blue-500 h-2 rounded-full"
+                    className="bg-teal-500 h-2 rounded-full"
                     style={{ width: `${driverMetrics.ecoScore}%` }}
                   />
                 </div>
@@ -220,45 +219,46 @@ export default function DriversPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-[#1E2433] border-[#2D3343]">
           <CardContent className="pt-6">
-            <h3 className="font-medium mb-4">Today&apos;s Stats</h3>
+            <h3 className="font-medium mb-4 text-gray-300">Today's Stats</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm">Alerts</span>
+                  <AlertTriangle className="w-4 h-4 text-yellow-400" />
+                  <span className="text-sm text-gray-400">Alerts</span>
                 </div>
-                <span className="font-medium">{driverMetrics.alertsToday}</span>
+                <span className="font-medium text-teal-400">{driverMetrics.alertsToday}</span>
               </div>
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">Improved</span>
+                  <TrendingUp className="w-4 h-4 text-teal-400" />
+                  <span className="text-sm text-gray-400">Improved</span>
                 </div>
-                <span className="font-medium">
+                <span className="font-medium text-teal-400">
                   {driverMetrics.improvedMetrics.length}
                 </span>
               </div>
             </div>
           </CardContent>
         </Card>
+
       </div>
 
       {/* Performance Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <Card>
+        <Card className="bg-[#1E2433] border-[#2D3343]">
           <CardHeader>
-            <CardTitle>Weekly Performance</CardTitle>
+            <CardTitle className="text-gray-100">Weekly Performance</CardTitle>
           </CardHeader>
           <CardContent>
             <DriverPerformanceChart data={weeklyTrends} />
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-[#1E2433] border-[#2D3343]">
           <CardHeader>
-            <CardTitle>Driving Skills Analysis</CardTitle>
+            <CardTitle className="text-gray-100">Driving Skills Analysis</CardTitle>
           </CardHeader>
           <CardContent>
             <DriverSkillsChart data={drivingSkills} />
@@ -269,12 +269,12 @@ export default function DriversPage() {
       {/* Daily Events */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <Card>
+          <Card className="bg-[#1E2433] border-[#2D3343]">
             <CardHeader>
-              <CardTitle>Today&apos;s Events</CardTitle>
+              <CardTitle className="text-gray-100">Today's Events</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="divide-y">
+              <div className="divide-y divide-[#2D3343]">
                 {dailyEvents.map((event) => (
                   <div key={event.id} className="py-4">
                     <div className="flex items-center justify-between mb-2">
@@ -282,23 +282,23 @@ export default function DriversPage() {
                         <AlertTriangle
                           className={`h-4 w-4 ${
                             event.severity === "high"
-                              ? "text-red-500"
+                              ? "text-red-400"
                               : event.severity === "medium"
-                              ? "text-yellow-500"
+                              ? "text-yellow-400"
                               : event.severity === "positive"
-                              ? "text-green-500"
-                              : "text-blue-500"
+                              ? "text-teal-400"
+                              : "text-blue-400"
                           }`}
                         />
-                        <span className="font-medium">{event.type}</span>
+                        <span className="font-medium text-gray-100">{event.type}</span>
                       </div>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-400">
                         {event.time}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-gray-400">
                       <p>{event.location}</p>
-                      <p className="mt-1 font-medium">{event.impact}</p>
+                      <p className="mt-1 font-medium text-gray-300">{event.impact}</p>
                     </div>
                   </div>
                 ))}
@@ -307,48 +307,48 @@ export default function DriversPage() {
           </Card>
         </div>
 
-        <Card>
+        <Card className="bg-[#1E2433] border-[#2D3343]">
           <CardHeader>
-            <CardTitle>Improvement Areas</CardTitle>
+            <CardTitle className="text-gray-100">Improvement Areas</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium mb-2 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
+              <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+                <h4 className="font-medium mb-2 flex items-center gap-2 text-gray-100">
+                  <TrendingUp className="w-4 h-4 text-teal-400" />
                   Strengths
                 </h4>
                 <ul className="space-y-2">
                   {driverMetrics.improvedMetrics.map((metric, index) => (
-                    <li key={index} className="text-sm flex items-center gap-2">
-                      <span className="w-2 h-2 bg-green-500 rounded-full" />
+                    <li key={index} className="text-sm flex items-center gap-2 text-gray-300">
+                      <span className="w-2 h-2 bg-teal-400 rounded-full" />
                       {metric}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-4 bg-yellow-50 rounded-lg">
-                <h4 className="font-medium mb-2 flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-yellow-500" />
+              <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+                <h4 className="font-medium mb-2 flex items-center gap-2 text-gray-100">
+                  <AlertTriangle className="w-4 h-4 text-yellow-400" />
                   Needs Improvement
                 </h4>
                 <ul className="space-y-2">
                   {driverMetrics.needsImprovement.map((metric, index) => (
-                    <li key={index} className="text-sm flex items-center gap-2">
-                      <span className="w-2 h-2 bg-yellow-500 rounded-full" />
+                    <li key={index} className="text-sm flex items-center gap-2 text-gray-300">
+                      <span className="w-2 h-2 bg-yellow-400 rounded-full" />
                       {metric}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium mb-2 flex items-center gap-2">
-                  <Timer className="w-4 h-4 text-blue-500" />
+              <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+                <h4 className="font-medium mb-2 flex items-center gap-2 text-gray-100">
+                  <Timer className="w-4 h-4 text-teal-400" />
                   Coaching Tips
                 </h4>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-sm text-gray-300">
                   <li>Schedule brake control training</li>
                   <li>Review idle reduction techniques</li>
                   <li>Practice eco-driving scenarios</li>
@@ -359,177 +359,182 @@ export default function DriversPage() {
         </Card>
       </div>
       {/* Suggestions Section */}
-      <div className="mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Suggestions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <p>Loading suggestions...</p>
-            ) : (
-              <div className="space-y-2">
-                {suggestions ? (
-                  parseFeedback(suggestions)
-                ) : (
-                  <p>No suggestions available.</p>
-                )}
-              </div>
-            )}
-            <Button onClick={fetchSuggestions} className="mt-4" variant="primary">
-              Get Suggestions
-            </Button>
-          </CardContent>
-        </Card>
+<div className="mt-6">
+  <Card className="bg-[#1E2433] border-[#2D3343]">
+    <CardHeader>
+      <CardTitle className="text-gray-100">Suggestions</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {loading ? (
+        <p className="text-gray-400">Loading suggestions...</p>
+      ) : (
+        <div className="space-y-2 text-gray-300">
+          {suggestions ? (
+            parseFeedback(suggestions)
+          ) : (
+            <p className="text-gray-400">No suggestions available.</p>
+          )}
+        </div>
+      )}
+      <Button 
+        onClick={fetchSuggestions} 
+        className="mt-4 bg-teal-500 hover:bg-teal-600 text-white" 
+        variant="default"
+      >
+        Get Suggestions
+      </Button>
+    </CardContent>
+  </Card>
+</div>
+
+
+{/* Driver Leaderboard */}
+<div className="mt-6">
+  <Card className="bg-[#1E2433] border-[#2D3343]">
+    <CardHeader>
+      <CardTitle className="text-gray-100">Driver Rankings</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <div className="text-sm text-gray-400 mb-1">Safety Score</div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-gray-300">Rank #3</span>
+            <span className="text-teal-400">
+              {driverMetrics.safetyScore}%
+            </span>
+          </div>
+        </div>
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <div className="text-sm text-gray-400 mb-1">Eco Score</div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-gray-300">Rank #5</span>
+            <span className="text-teal-400">
+              {driverMetrics.ecoScore}%
+            </span>
+          </div>
+        </div>
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <div className="text-sm text-gray-400 mb-1">Efficiency</div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-gray-300">Rank #4</span>
+            <span className="text-teal-400">
+              {driverMetrics.efficiencyScore}%
+            </span>
+          </div>
+        </div>
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <div className="text-sm text-gray-400 mb-1">Compliance</div>
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-gray-300">Rank #2</span>
+            <span className="text-teal-400">
+              {driverMetrics.complianceScore}%
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Driver Leaderboard */}
+      {/* Monthly Performance Summary */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <h4 className="font-medium mb-3 text-gray-100">Monthly Statistics</h4>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Total Distance</span>
+              <span className="font-medium text-teal-400">3,245 km</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Fuel Saved</span>
+              <span className="font-medium text-teal-400">125 L</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">CO2 Reduced</span>
+              <span className="font-medium text-teal-400">287 kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <h4 className="font-medium mb-3 text-gray-100">Safety Records</h4>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Incident-Free Days</span>
+              <span className="font-medium text-teal-400">45</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Safety Violations</span>
+              <span className="font-medium text-teal-400">0</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Perfect Trips</span>
+              <span className="font-medium text-teal-400">89%</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B]">
+          <h4 className="font-medium mb-3 text-gray-100">Training Status</h4>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Completed Modules</span>
+              <span className="font-medium text-teal-400">12/15</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Next Training</span>
+              <span className="font-medium text-teal-400">Dec 15</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Certifications</span>
+              <span className="font-medium text-teal-400">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Achievements Section */}
       <div className="mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Driver Rankings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">Safety Score</div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Rank #3</span>
-                  <span className="text-green-600">
-                    {driverMetrics.safetyScore}%
-                  </span>
-                </div>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">Eco Score</div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Rank #5</span>
-                  <span className="text-green-600">
-                    {driverMetrics.ecoScore}%
-                  </span>
-                </div>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">Efficiency</div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Rank #4</span>
-                  <span className="text-green-600">
-                    {driverMetrics.efficiencyScore}%
-                  </span>
-                </div>
-              </div>
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <div className="text-sm text-gray-600 mb-1">Compliance</div>
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">Rank #2</span>
-                  <span className="text-green-600">
-                    {driverMetrics.complianceScore}%
-                  </span>
-                </div>
+        <h4 className="font-medium mb-4 text-gray-100">Recent Achievements</h4>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="flex items-center gap-3 p-3 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B] hover:border-teal-500/50 transition-colors duration-200">
+            <Award className="w-8 h-8 text-teal-400" />
+            <div>
+              <div className="font-medium text-gray-100">Eco Master</div>
+              <div className="text-sm text-gray-400">
+                Top 5% fuel efficiency
               </div>
             </div>
-
-            {/* Monthly Performance Summary */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium mb-3">Monthly Statistics</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Total Distance</span>
-                    <span className="font-medium">3,245 km</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Fuel Saved</span>
-                    <span className="font-medium">125 L</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>CO2 Reduced</span>
-                    <span className="font-medium">287 kg</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium mb-3">Safety Records</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Incident-Free Days</span>
-                    <span className="font-medium">45</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Safety Violations</span>
-                    <span className="font-medium">0</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Perfect Trips</span>
-                    <span className="font-medium">89%</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 bg-yellow-50 rounded-lg">
-                <h4 className="font-medium mb-3">Training Status</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Completed Modules</span>
-                    <span className="font-medium">12/15</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Next Training</span>
-                    <span className="font-medium">Dec 15</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Certifications</span>
-                    <span className="font-medium">4</span>
-                  </div>
-                </div>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B] hover:border-teal-500/50 transition-colors duration-200">
+            <Shield className="w-8 h-8 text-teal-400" />
+            <div>
+              <div className="font-medium text-gray-100">Safety Champion</div>
+              <div className="text-sm text-gray-400">
+                30 days perfect safety
               </div>
             </div>
-
-            {/* Achievements Section */}
-            <div className="mt-6">
-              <h4 className="font-medium mb-4">Recent Achievements</h4>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                  <Award className="w-8 h-8 text-purple-500" />
-                  <div>
-                    <div className="font-medium">Eco Master</div>
-                    <div className="text-sm text-gray-600">
-                      Top 5% fuel efficiency
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                  <Shield className="w-8 h-8 text-blue-500" />
-                  <div>
-                    <div className="font-medium">Safety Champion</div>
-                    <div className="text-sm text-gray-600">
-                      30 days perfect safety
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                  <Timer className="w-8 h-8 text-green-500" />
-                  <div>
-                    <div className="font-medium">Time Keeper</div>
-                    <div className="text-sm text-gray-600">
-                      100% on-time delivery
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
-                  <TrendingUp className="w-8 h-8 text-yellow-500" />
-                  <div>
-                    <div className="font-medium">Top Performer</div>
-                    <div className="text-sm text-gray-600">
-                      Quarterly best driver
-                    </div>
-                  </div>
-                </div>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B] hover:border-teal-500/50 transition-colors duration-200">
+            <Timer className="w-8 h-8 text-teal-400" />
+            <div>
+              <div className="font-medium text-gray-100">Time Keeper</div>
+              <div className="text-sm text-gray-400">
+                100% on-time delivery
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="flex items-center gap-3 p-3 bg-[#2A2F3B] rounded-lg border border-[#3A3F4B] hover:border-teal-500/50 transition-colors duration-200">
+            <TrendingUp className="w-8 h-8 text-teal-400" />
+            <div>
+              <div className="font-medium text-gray-100">Top Performer</div>
+              <div className="text-sm text-gray-400">
+                Quarterly best driver
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
       </div>
     </div>
   );
