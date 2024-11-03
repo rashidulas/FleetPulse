@@ -1,32 +1,21 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import treeTransition from "./truckFleet3.webp"; // Import the image
-import newImage from "./DashboardSS.png"; // Import the image you want to display
-
-export const runtime = "edge";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen flex flex-col font-sans overflow-y-auto">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${treeTransition.src})`,
-          backgroundAttachment: 'scroll', // Changed to scroll
-          backgroundSize: 'cover',
-        }}
-      />
-
-      {/* Main Content (Layered above the background) */}
-      <div className="relative z-10 flex flex-col"> {/* Removed min-h-screen */}
+    <div className="relative min-h-screen flex flex-col font-sans overflow-y-auto bg-[#1B1F2B]">
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col">
         {/* Navbar */}
-        <header className="transparent shadow-sm w-full px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">FleetPulse</h1>
+        <header className="bg-[#1E2433] shadow-lg w-full px-8 py-4 flex justify-between items-center border-b border-[#2D3343]">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-teal-500 rounded"></div>
+            <h1 className="text-2xl font-bold text-gray-100">FleetPulse</h1>
+          </div>
           <div>
-            <SignedOut>
+          <SignedOut>
               <SignInButton>
-                <button className="px-6 py-2 bg-primary text-white rounded hover:bg-green-600 transition ease-in-out duration-200">
+                <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
                   Sign In
                 </button>
               </SignInButton>
@@ -34,71 +23,145 @@ export default function Home() {
             <SignedIn>
               <UserButton />
             </SignedIn>
+            {/* <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+              Sign In
+            </button> */}
           </div>
         </header>
 
         {/* Hero Section */}
-        <section className="flex-1 flex items-center justify-center text-center py-24 px-8 mb-24">
-          <div className="max-w-2xl mx-auto">
-            <h1 className="text-5xl font-semibold text-black leading-tight mb-6 drop-shadow-lg">
-              Reduce Carbon Emissions on Your Route with <span className="text-green-700">FleetPulse</span>
+        <section className="flex-1 flex items-center justify-center text-center py-24 px-8">
+          <div className="max-w-3xl mx-auto">
+            <h1 className="text-5xl font-semibold text-gray-100 leading-tight mb-6">
+              Fleet Management with <span className="text-teal-400">AI-Powered</span> Insights
             </h1>
 
-            <p className="text-white text-lg mb-8 drop-shadow-lg">
-              Get optimized, eco-friendly route suggestions and vehicle maintenance tips to reduce your carbon footprint.
+            <p className="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
+              Get optimized, eco-friendly route suggestions and vehicle maintenance tips for your fleet operations.
             </p>
 
-            {/* Button for logged-out users */}
-            <SignedOut>
+            <div className="space-x-4">
+              {/* <button className="py-2.5 px-6 bg-teal-500 text-white rounded-md font-medium hover:bg-teal-600 transition-colors duration-200"> */}
+              <SignedOut>
               <SignInButton>
-                <button className="py-3 px-8 bg-primary text-white rounded-lg font-semibold shadow-lg hover:bg-green-800 transition-transform duration-300 transform hover:scale-105">
+                <button className="py-2.5 px-6 bg-teal-500 text-white rounded-md font-medium hover:bg-teal-600 transition-colors duration-200">
                   Get Started
                 </button>
               </SignInButton>
             </SignedOut>
-
-            {/* Button for logged-in users */}
             <SignedIn>
               <Link href="/dashboard" passHref>
-                <button className="mt-4 py-3 px-8 bg-primary text-white rounded-lg font-semibold shadow-lg hover:bg-green-800 transition-transform duration-300 transform hover:scale-105">
+                <button className="py-2.5 px-6 bg-teal-500 text-white rounded-md font-medium hover:bg-teal-600 transition-colors duration-200">
                   Go to Dashboard
                 </button>
               </Link>
             </SignedIn>
-          </div>
-        </section>
-
-        {/* About Us Section with Wider White Background */}
-        <section className="py-42 px-8 text-center">
-          <div className="mx-auto bg-white p-8 rounded-lg shadow-md w-full max-w-7xl">
-            <h2 className="text-4xl font-bold mb-6 text-black">About Us</h2>
-            <p className="text-lg mb-4 text-black">
-              At FleetPulse, we are dedicated to providing innovative solutions for reducing carbon emissions in the transportation industry.
-              Our mission is to empower businesses with the tools and insights needed to operate more sustainably.
-            </p>
-            <p className="text-lg text-black">
-              With a team of passionate experts, we are committed to creating a greener future by optimizing routes and promoting eco-friendly practices.
-            </p>
-          </div>
-        </section>
-
-        {/* Picture Container Section */}
-        <section className="py-32 px-8 text-center">
-          <div className="mx-auto w-full max-w-7xl">
-            <h2 className="text-4xl font-bold mb-6 text-black">Overview</h2>
-            <div className="flex justify-center">
-              <img src={newImage.src} alt="FleetPulse Commitment" className="rounded-lg shadow-md max-w-full h-auto" />
+              {/* </button> */}
+              <button className="py-2.5 px-6 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+                Learn More
+              </button>
             </div>
           </div>
         </section>
 
-        {/* Add some content here to allow scrolling */}
-        <div className="flex-grow" />
+        {/* Feature Cards Section */}
+        <section className="px-8 py-16">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
+            {/* Learn Card */}
+            <div className="bg-[#1E2433] border border-[#2D3343] rounded-lg p-6 hover:border-teal-500/50 transition-colors duration-200">
+              <h3 className="text-xl font-semibold text-gray-100 mb-2">Learn</h3>
+              <div className="text-sm text-gray-400 mb-4">
+                For fleet managers and operators looking to optimize their operations
+              </div>
+              <p className="text-gray-300 mb-6">
+                Easy access to fleet management tools and resources for accelerated decision making.
+              </p>
+              <button className="py-2 px-4 bg-transparent border border-teal-500 text-teal-500 rounded-md text-sm hover:bg-teal-500/10 transition-colors duration-200">
+                Get Started
+              </button>
+            </div>
+
+            {/* Evaluate Card */}
+            <div className="bg-[#1E2433] border border-[#2D3343] rounded-lg p-6 hover:border-teal-500/50 transition-colors duration-200">
+              <h3 className="text-xl font-semibold text-gray-100 mb-2">Evaluate</h3>
+              <div className="text-sm text-gray-400 mb-4">
+                For enterprise fleet operations and logistics companies
+              </div>
+              <p className="text-gray-300 mb-6">
+                Early access to the latest fleet management features and performance analytics.
+              </p>
+              <button className="py-2 px-4 bg-transparent border border-teal-500 text-teal-500 rounded-md text-sm hover:bg-teal-500/10 transition-colors duration-200">
+                Get Started
+              </button>
+            </div>
+
+            {/* Deploy Card */}
+            <div className="bg-[#1E2433] border border-[#2D3343] rounded-lg p-6 hover:border-teal-500/50 transition-colors duration-200">
+              <h3 className="text-xl font-semibold text-gray-100 mb-2">Deploy</h3>
+              <div className="text-sm text-gray-400 mb-4">
+                For large-scale fleet operations and logistics networks
+              </div>
+              <p className="text-gray-300 mb-6">
+                Optimized infrastructure and tools for managing fleet operations at scale.
+              </p>
+              <button className="py-2 px-4 bg-transparent border border-teal-500 text-teal-500 rounded-md text-sm hover:bg-teal-500/10 transition-colors duration-200">
+                Get Started
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section className="py-16 px-8 bg-[#1E2433]">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-100 mb-8">About FleetPulse</h2>
+            <div className="grid md:grid-cols-2 gap-12">
+              <div>
+                <p className="text-gray-300 mb-6">
+                  At FleetPulse, we are dedicated to providing innovative solutions for fleet management and logistics optimization.
+                  Our platform leverages AI and real-time analytics to help businesses operate more efficiently.
+                </p>
+                <p className="text-gray-300">
+                  With a team of industry experts, we are committed to transforming fleet operations through technology.
+                </p>
+              </div>
+              <div className="bg-[#1B1F2B] rounded-lg p-8 border border-[#2D3343]">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-teal-500 rounded-full"></div>
+                    </div>
+                    <div>
+                      <h4 className="text-gray-100 font-medium">Real-time Analytics</h4>
+                      <p className="text-gray-400 text-sm">Monitor your fleet performance in real-time</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-teal-500 rounded-full"></div>
+                    </div>
+                    <div>
+                      <h4 className="text-gray-100 font-medium">Route Optimization</h4>
+                      <p className="text-gray-400 text-sm">AI-powered route planning and optimization</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Footer */}
-        <footer className="transparent py-6 px-4 shadow-md">
-          <div className="text-center text-black text-sm">
-            © {new Date().getFullYear()} FleetPulse. All Rights Reserved.
+        <footer className="bg-[#1E2433] py-8 px-4 border-t border-[#2D3343]">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} FleetPulse. All Rights Reserved.
+            </div>
+            <div className="mt-4 space-x-4 text-sm">
+              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors duration-200">Privacy Policy</a>
+              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors duration-200">Terms of Use</a>
+              <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors duration-200">Contact</a>
+            </div>
           </div>
         </footer>
       </div>

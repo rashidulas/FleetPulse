@@ -99,14 +99,14 @@ export default function MapWithSideBySideRoutes() {
   const reductionPercentage = emissionsSavings && alternativeEmissions ? ((emissionsSavings / alternativeEmissions) * 100).toFixed(1) : null;
 
   return (
-    <div>
+    <div className="bg-[#1B1F2B] p-4 rounded-lg">
       {/* Location Input Fields */}
-      <div className="location-inputs mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md w-full max-w-2xl mx-auto">
+      <div className="mb-4 flex space-x-4 p-4 bg-[#1E2433] rounded-lg border border-[#2D3343] w-full max-w-2xl mx-auto">
         <Autocomplete onLoad={onLoadOrigin} onPlaceChanged={onOriginPlaceChanged}>
           <input
             type="text"
             placeholder="Enter origin"
-            className="input-field p-2 border border-gray-300 rounded-md w-full"
+            className="p-2 bg-[#1B1F2B] border border-[#2D3343] rounded-md w-full text-gray-100 placeholder-gray-400 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
             value={origin}
             onChange={(e) => setOrigin(e.target.value)}
           />
@@ -115,7 +115,7 @@ export default function MapWithSideBySideRoutes() {
           <input
             type="text"
             placeholder="Enter destination"
-            className="input-field p-2 border border-gray-300 rounded-md w-full"
+            className="p-2 bg-[#1B1F2B] border border-[#2D3343] rounded-md w-full text-gray-100 placeholder-gray-400 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
           />
@@ -123,9 +123,10 @@ export default function MapWithSideBySideRoutes() {
       </div>
 
       {/* Maps Container */}
-      <div className="flex flex-row space-x-4 w-full max-w-6xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 w-full max-w-6xl mx-auto">
         {/* Eco-Friendly Route Map */}
-        <div className="flex-1">
+        <div className="flex-1 bg-[#1E2433] p-4 rounded-lg border border-[#2D3343]">
+          <h3 className="text-gray-100 font-medium mb-2">Eco-Friendly Route</h3>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={center}
@@ -158,7 +159,8 @@ export default function MapWithSideBySideRoutes() {
         </div>
 
         {/* Alternative Route Map */}
-        <div className="flex-1">
+        <div className="flex-1 bg-[#1E2433] p-4 rounded-lg border border-[#2D3343]">
+          <h3 className="text-gray-100 font-medium mb-2">Alternative Route</h3>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={center}
@@ -193,14 +195,47 @@ export default function MapWithSideBySideRoutes() {
 
       {/* Emission Savings Summary */}
       {ecoDistance !== null && altDistance !== null && (
-        <div className="emission-summary mt-4 p-4 bg-[#1B1F2B] rounded-lg w-full max-w-2xl mx-auto text-center">
-          <h3 className="text-lg text-white font-bold">Emission Savings Summary</h3>
-          <p>Eco-Friendly Route Distance: <strong>{ecoDistance.toFixed(2)} km</strong></p>
-          <p>Alternative Route Distance: <strong>{altDistance.toFixed(2)} km</strong></p>
-          <p>Eco-Friendly Route Emissions: <strong>{ecoFriendlyEmissions !== null ? ecoFriendlyEmissions.toFixed(2) : "N/A"} kg CO₂</strong></p>
-          <p>Alternative Route Emissions: <strong>{alternativeEmissions !== null ? alternativeEmissions.toFixed(2) : "N/A"} kg CO₂</strong></p>
-          <p>CO₂ Savings: <strong>{emissionsSavings !== null ? emissionsSavings.toFixed(2) : "N/A"} kg CO₂</strong></p>
-          <p>Reduction Percentage: <strong>{reductionPercentage}%</strong></p>
+        <div className="mt-6 p-6 bg-[#1E2433] border border-[#2D3343] rounded-lg w-full max-w-2xl mx-auto">
+          <h3 className="text-lg text-gray-100 font-semibold mb-4 text-center">Emission Savings Summary</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-400">Eco-Friendly Route:</span>
+                <span className="text-gray-100 font-medium">{ecoDistance.toFixed(2)} km</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Alternative Route:</span>
+                <span className="text-gray-100 font-medium">{altDistance.toFixed(2)} km</span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-400">Eco-Friendly Emissions:</span>
+                <span className="text-teal-400 font-medium">
+                  {ecoFriendlyEmissions !== null ? ecoFriendlyEmissions.toFixed(2) : "N/A"} kg CO₂
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-400">Alternative Emissions:</span>
+                <span className="text-red-400 font-medium">
+                  {alternativeEmissions !== null ? alternativeEmissions.toFixed(2) : "N/A"} kg CO₂
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-[#2D3343]">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-400">Total CO₂ Savings:</span>
+              <div className="text-right">
+                <span className="text-teal-400 font-bold text-lg">
+                  {emissionsSavings !== null ? emissionsSavings.toFixed(2) : "N/A"} kg CO₂
+                </span>
+                <span className="block text-sm text-teal-500">
+                  {reductionPercentage}% reduction
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
