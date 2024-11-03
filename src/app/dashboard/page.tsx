@@ -34,9 +34,27 @@ const performanceData = [
 const FleetDashboard: React.FC = () => {
   // Define recentAlerts array
   const recentAlerts = [
-    { id: 1, type: "Engine Issue", severity: "high", vehicle: "Truck 1", message: "Engine overheating" },
-    { id: 2, type: "Low Tire Pressure", severity: "medium", vehicle: "Truck 2", message: "Front left tire pressure low" },
-    { id: 3, type: "Battery Low", severity: "low", vehicle: "Truck 3", message: "Battery charge below 20%" },
+    {
+      id: 1,
+      type: "Engine Issue",
+      severity: "high",
+      vehicle: "Truck 1",
+      message: "Engine overheating",
+    },
+    {
+      id: 2,
+      type: "Low Tire Pressure",
+      severity: "medium",
+      vehicle: "Truck 2",
+      message: "Front left tire pressure low",
+    },
+    {
+      id: 3,
+      type: "Battery Low",
+      severity: "low",
+      vehicle: "Truck 3",
+      message: "Battery charge below 20%",
+    },
   ];
 
   // Define fleetMetrics object
@@ -57,7 +75,6 @@ const FleetDashboard: React.FC = () => {
     tirePressure: 95,
   };
 
-
   // Keep existing data and helper functions...
   function getSeverityStyles(severity: string) {
     switch (severity) {
@@ -76,14 +93,27 @@ const FleetDashboard: React.FC = () => {
     <div className="bg-[#1B1F2B] text-gray-100 p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-semibold text-gray-100">FleetPlus Dashboard</h1>
+        <h1 className="text-4xl font-semibold bg-gradient-to-r from-emerald-600 to-green-800 bg-clip-text text-transparent">
+          FleetPlus Dashboard
+        </h1>
         <div className="flex space-x-4">
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Routes</Button>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Vehicles</Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">
+            Routes
+          </Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">
+            Vehicles
+          </Button>
           <a href="/drivers">
-            <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Drivers</Button>
+            <Button
+              variant="ghost"
+              className="text-gray-300 hover:text-teal-400"
+            >
+              Drivers
+            </Button>
           </a>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Reports</Button>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">
+            Reports
+          </Button>
         </div>
       </div>
 
@@ -91,8 +121,8 @@ const FleetDashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <Card className="bg-[#1E2433] border-[#2D3343] hover:border-teal-500/50 transition-colors duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-gray-300">Fleet Status</CardTitle>
-            <Truck className="h-4 w-4 text-teal-400" />
+            <CardTitle className="text-sm font-medium">Fleet Status</CardTitle>
+            <Truck className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-100">
@@ -122,7 +152,7 @@ const FleetDashboard: React.FC = () => {
             <CardTitle className="text-sm font-medium text-gray-300">
               Environmental Impact
             </CardTitle>
-            <Leaf className="h-4 w-4 text-teal-400" />
+            <Leaf className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-100">
@@ -132,7 +162,9 @@ const FleetDashboard: React.FC = () => {
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-300">Eco Score</span>
-                <span className="font-medium text-teal-400">{fleetMetrics.ecoScore}</span>
+                <span className="font-medium text-teal-400">
+                  {fleetMetrics.ecoScore}
+                </span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-300">Fuel Efficiency</span>
@@ -150,7 +182,7 @@ const FleetDashboard: React.FC = () => {
             <CardTitle className="text-sm font-medium text-gray-300">
               Financial Overview
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-teal-400" />
+            <DollarSign className="h-4 w-4 text-green-700" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-gray-100">
@@ -160,7 +192,9 @@ const FleetDashboard: React.FC = () => {
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-300">Cost per Mile</span>
-                <span className="font-medium text-teal-400">${fleetMetrics.costPerMile}</span>
+                <span className="font-medium text-teal-400">
+                  ${fleetMetrics.costPerMile}
+                </span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-300">Maintenance Costs</span>
@@ -198,12 +232,12 @@ const FleetDashboard: React.FC = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#2D3343" />
                 <XAxis dataKey="month" stroke="#94A3B8" />
                 <YAxis stroke="#94A3B8" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#1E2433',
-                    border: '1px solid #2D3343',
-                    borderRadius: '6px',
-                    color: '#E2E8F0'
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1E2433",
+                    border: "1px solid #2D3343",
+                    borderRadius: "6px",
+                    color: "#E2E8F0",
                   }}
                 />
                 <Legend />
@@ -254,15 +288,23 @@ const FleetDashboard: React.FC = () => {
                               : "text-teal-400"
                           }`}
                         />
-                        <span className="font-medium text-gray-100">{alert.type}</span>
+                        <span className="font-medium text-gray-100">
+                          {alert.type}
+                        </span>
                       </div>
-                      <span className={`${getSeverityStyles(alert.severity)} bg-opacity-20`}>
+                      <span
+                        className={`${getSeverityStyles(
+                          alert.severity
+                        )} bg-opacity-20`}
+                      >
                         {alert.severity}
                       </span>
                     </div>
                     <div className="text-sm text-gray-400">
-                      <span className="font-medium text-gray-300">{alert.vehicle}</span> -{" "}
-                      {alert.message}
+                      <span className="font-medium text-gray-300">
+                        {alert.vehicle}
+                      </span>{" "}
+                      - {alert.message}
                     </div>
                   </div>
                 ))}
@@ -280,7 +322,9 @@ const FleetDashboard: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-300">Overall Health</span>
-                <span className="font-bold text-teal-400">{fleetMetrics.healthScore}%</span>
+                <span className="font-bold text-teal-400">
+                  {fleetMetrics.healthScore}%
+                </span>
               </div>
               <div className="w-full bg-[#1B1F2B] rounded-full h-2">
                 <div
