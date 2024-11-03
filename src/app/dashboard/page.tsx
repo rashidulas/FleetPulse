@@ -145,7 +145,6 @@ const FleetDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-semibold">FleetPlus Dashboard</h1>
-        {/* < Map/> */}
         <div className="flex space-x-4">
           <Button variant="ghost">Routes</Button>
           <Button variant="ghost">Vehicles</Button>
@@ -158,7 +157,6 @@ const FleetDashboard: React.FC = () => {
 
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* Operational Metrics */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Fleet Status</CardTitle>
@@ -257,34 +255,6 @@ const FleetDashboard: React.FC = () => {
           <Map />
         </div>
       </CardContent>
-      {/* <EmissionSummary 
-        ecoFriendlyDirections={{ 
-          routes: [
-            {
-              legs: [
-                {
-                  distance: {
-                    value: 1000,
-                  },
-                },
-              ],
-            },
-          ],
-        }} 
-        alternativeDirections={{ 
-          routes: [
-            {
-              legs: [
-                {
-                  distance: {
-                    value: 1200,
-                  },
-                },
-              ],
-            },
-          ],
-        }} 
-      /> */}
     </Card>
 
         {/* Performance Trends */}
@@ -293,8 +263,8 @@ const FleetDashboard: React.FC = () => {
             <CardTitle>Performance Trends</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
-              <LineChart width={500} height={300} data={performanceData}>
+            <div className="h-[600px]">
+              <LineChart width={500} height={500} data={performanceData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />

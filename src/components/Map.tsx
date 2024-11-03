@@ -193,8 +193,8 @@ export default function MapWithSideBySideRoutes() {
 
       {/* Emission Savings Summary */}
       {ecoDistance !== null && altDistance !== null && (
-        <div className="emission-summary mt-4 p-4 bg-gray-100 rounded-lg w-full max-w-2xl mx-auto text-center">
-          <h3 className="text-lg font-bold">Emission Savings Summary</h3>
+        <div className="emission-summary mt-4 p-4 bg-[#1B1F2B] rounded-lg w-full max-w-2xl mx-auto text-center">
+          <h3 className="text-lg text-white font-bold">Emission Savings Summary</h3>
           <p>Eco-Friendly Route Distance: <strong>{ecoDistance.toFixed(2)} km</strong></p>
           <p>Alternative Route Distance: <strong>{altDistance.toFixed(2)} km</strong></p>
           <p>Eco-Friendly Route Emissions: <strong>{ecoFriendlyEmissions !== null ? ecoFriendlyEmissions.toFixed(2) : "N/A"} kg CO₂</strong></p>
