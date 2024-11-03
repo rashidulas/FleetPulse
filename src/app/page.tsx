@@ -1,6 +1,7 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import CSVUploadForm from "@/components/CSVUploadForm";
+export const runtime = "edge";
 
 export default function Home() {
   return (

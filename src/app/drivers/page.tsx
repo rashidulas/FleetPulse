@@ -1,5 +1,5 @@
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -102,7 +102,7 @@ export default function DriversPage() {
           alertsToday: driverMetrics.alertsToday,
         }),
       });
-      const data = await response.json();
+      const data = (await response.json()) as { suggestions?: string };
       if (data.suggestions) {
         setSuggestions(data.suggestions);
       } else {
@@ -119,15 +119,21 @@ export default function DriversPage() {
   // Function to parse the feedback text and convert to HTML
   const parseFeedback = (text: string) => {
     // Split by new lines and then process each line
-    return text.split('\n').map((line, index) => {
+    return text.split("\n").map((line, index) => {
       // Replace **bold text** with <strong>bold text</strong>
-      const processedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      const processedLine = line.replace(
+        /\*\*(.*?)\*\*/g,
+        "<strong>$1</strong>"
+      );
       return (
-        <div key={index} dangerouslySetInnerHTML={{ __html: processedLine }} className="mb-2" />
+        <div
+          key={index}
+          dangerouslySetInnerHTML={{ __html: processedLine }}
+          className="mb-2"
+        />
       );
     });
   };
-
 
   return (
     <div className="bg-white p-8">
@@ -376,7 +382,11 @@ export default function DriversPage() {
                 )}
               </div>
             )}
-            <Button onClick={fetchSuggestions} className="mt-4" variant="primary">
+            <Button
+              onClick={fetchSuggestions}
+              className="mt-4"
+              variant="default"
+            >
               Get Suggestions
             </Button>
           </CardContent>
