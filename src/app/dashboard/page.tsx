@@ -246,17 +246,17 @@ const FleetDashboard: React.FC = () => {
 
       {/* Charts and Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Route Optimization Map Placeholder */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Active Routes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-gray-100 h-[300px] rounded-lg flex items-center justify-center">
-                  <Map/>
-              </div>
-          </CardContent>
-        </Card>
+  {/* Route Optimization Map */}
+    <Card>
+      <CardHeader>
+        <CardTitle>Active Routes</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bg-gray-100 h-[300px] rounded-lg overflow-hidden">
+          <Map/>
+        </div>
+      </CardContent>
+    </Card>
 
         {/* Performance Trends */}
         <Card>
