@@ -20,6 +20,7 @@ import type {
   DailyEvent,
   PerformanceTrend,
 } from "@/types/driver";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function DriversPage() {
   // Sample data
@@ -138,10 +139,26 @@ export default function DriversPage() {
           <a href="/dashboard">
             <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Overview</Button>
           </a>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Performance</Button>
+          {/* <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Performance</Button>
           <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Reports</Button>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Settings</Button>
-        </div>
+          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Settings</Button> */}
+        
+        <div>
+          <SignedOut>
+              <SignInButton>
+                <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            {/* <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+              Sign In
+            </button> */}
+          </div>
+          </div>
       </div>
 
       {/* Driver Profile Summary */}

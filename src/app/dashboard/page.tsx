@@ -21,6 +21,8 @@ import {
   Legend,
 } from "recharts";
 import Map from "@/components/Map";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // Keep existing interfaces and data...
 
@@ -72,18 +74,40 @@ const FleetDashboard: React.FC = () => {
     }
   }
 
+  const router = useRouter();
+
+  const handleNavigation = () => {
+    router.push("/"); // Route to the main page
+  };
+
   return (
     <div className="bg-[#1B1F2B] text-gray-100 p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-semibold text-gray-100">FleetPlus Dashboard</h1>
+        <Button className="text-4xl font-semibold text-gray-100" onClick={handleNavigation}>FleetPulse</Button>
+        <h1 className="text-4xl font-semibold text-gray-100"> Dashboard</h1>
         <div className="flex space-x-4">
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Routes</Button>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Vehicles</Button>
+          {/* <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Routes</Button> */}
+          {/* <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Vehicles</Button> */}
           <a href="/drivers">
             <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Drivers</Button>
           </a>
-          <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Reports</Button>
+          {/* <Button variant="ghost" className="text-gray-300 hover:text-teal-400">Reports</Button> */}
+          <div>
+          <SignedOut>
+              <SignInButton>
+                <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+                  Sign In
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            {/* <button className="px-6 py-2 bg-transparent border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500/10 transition-colors duration-200">
+              Sign In
+            </button> */}
+          </div>
         </div>
       </div>
 
