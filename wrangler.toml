@@ -19,6 +19,10 @@ pages_build_output_dir = ".vercel/output/static"
 [vars]
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_bmV3LWRvZy0xLmNsZXJrLmFjY291bnRzLmRldiQ"
 CLERK_SECRET_KEY = "sk_test_wAZjKEBu0qLERVVYInYO6Jc6cvEtVrFYxoCQ4VZ914"
+AWS_REGION = "us-west-2"
+AWS_ACCESS_KEY_ID = "AKIA34AMC7OUCR37Z43T"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_S3_BUCKET_NAME = "databricks-workspace-stack-20dd6-bucket"
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/pages/functions/bindings/#workers-ai
