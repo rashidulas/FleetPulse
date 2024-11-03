@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -142,14 +144,19 @@ export default function DriversPage() {
     <div className="bg-white p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-semibold">Driver Analytics</h1>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-800 bg-clip-text text-transparent">
+          Driver Analytics
+        </h1>
         <div className="flex space-x-4">
+          {/* <Button variant="ghost">Routes</Button> */}
+          {/* <Button variant="ghost">Vehicles</Button> */}
           <a href="/dashboard">
             <Button variant="ghost">Overview</Button>
           </a>
-          <Button variant="ghost">Performance</Button>
-          <Button variant="ghost">Reports</Button>
-          <Button variant="ghost">Settings</Button>
+          {/* <Button variant="ghost">Reports</Button> */}
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </div>
 

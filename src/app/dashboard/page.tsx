@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -225,15 +227,20 @@ const FleetDashboard: React.FC = () => {
     <div className="bg-white p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-semibold">FleetPlus Dashboard</h1>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-800 bg-clip-text text-transparent">
+          FleetPlus Dashboard
+        </h1>
         {/* < Map/> */}
         <div className="flex space-x-4">
-          <Button variant="ghost">Routes</Button>
-          <Button variant="ghost">Vehicles</Button>
+          {/* <Button variant="ghost">Routes</Button> */}
+          {/* <Button variant="ghost">Vehicles</Button> */}
           <a href="/drivers">
             <Button variant="ghost">Drivers</Button>
           </a>
-          <Button variant="ghost">Reports</Button>
+          {/* <Button variant="ghost">Reports</Button> */}
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </div>
 

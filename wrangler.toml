@@ -29,6 +29,7 @@ DATABRICKS_WORKSPACE_URL="https://dbc-8f2e4978-1df7.cloud.databricks.com"
 DATABRICKS_API_TOKEN="dapi07cfa7a6f9a7e204e1262f569f7a8f2a"
 CLOUDFLARE_ACCOUNT_ID="205aec1890922417c47d85a19c9768f4"
 CLOUDFLARE_API_TOKEN="WGKn4wQPSNj4jkrHcsEkd-aeDsPKoUBoU_d80LLk"
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="AIzaSyCWL0U2BIgsrnUt7pIlEhgSAE9Q9MmLK4c"
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/pages/functions/bindings/#workers-ai
