@@ -1,6 +1,8 @@
 import { SignUp } from "@clerk/nextjs";
 import Image from "next/image";
 
+export const runtime = "edge";
+
 export default function SignUpPage() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 bg-gradient-to-b from-white via-[#f5f9ff] to-[#e0f7fa]">
@@ -14,27 +16,39 @@ export default function SignUpPage() {
             height={350}
             className="mb-8"
           />
-          <h1 className="text-5xl font-bold text-gray-800 mb-4">Welcome to waste.0</h1>
+          <h1 className="text-5xl font-bold text-gray-800 mb-4">
+            Welcome to waste.0
+          </h1>
           <p className="text-lg text-gray-700">
-            Optimize grocery orders and reduce food waste with the power of AI. Donate surplus food to local charities before it expires, and help make the world a better place.
+            Optimize grocery orders and reduce food waste with the power of AI.
+            Donate surplus food to local charities before it expires, and help
+            make the world a better place.
           </p>
         </div>
 
         {/* Right Section: Sign Up Form */}
         <div className="flex flex-col items-center justify-center p-8">
-          <h2 className="text-3xl font-semibold text-[#ff7043] mb-6 text-center">Sign Up</h2>
-          
-            <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" forceRedirectUrl="/onboarding" />
-            <p className="mt-6 text-sm text-center text-gray-500">
-              By signing up, you agree to our{" "}
-              <a href="/terms" className="text-[#2e7d32] hover:underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="/privacy" className="text-[#2e7d32] hover:underline">
-                Privacy Policy
-              </a>.
-            </p>
+          <h2 className="text-3xl font-semibold text-[#ff7043] mb-6 text-center">
+            Sign Up
+          </h2>
+
+          <SignUp
+            path="/sign-up"
+            routing="path"
+            signInUrl="/sign-in"
+            forceRedirectUrl="/onboarding"
+          />
+          <p className="mt-6 text-sm text-center text-gray-500">
+            By signing up, you agree to our{" "}
+            <a href="/terms" className="text-[#2e7d32] hover:underline">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" className="text-[#2e7d32] hover:underline">
+              Privacy Policy
+            </a>
+            .
+          </p>
         </div>
       </div>
 
