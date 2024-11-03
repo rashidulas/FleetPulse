@@ -5,6 +5,13 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   User,
   AlertTriangle,
   Award,
@@ -24,7 +31,13 @@ import type {
 } from "@/types/driver";
 
 export default function DriversPage() {
-  const [driverMetrics, setDriverMetrics] = useState<DriverMetrics | null>(null);
+  const [drivers, setDrivers] = useState<
+    { driver_id: string; driver_name: string }[]
+  >([]);
+  const [selectedDriverId, setSelectedDriverId] = useState("DR-2024-001");
+  const [driverMetrics, setDriverMetrics] = useState<DriverMetrics | null>(
+    null
+  );
   const [drivingSkills, setDrivingSkills] = useState<DrivingSkill[]>([]);
   const [dailyEvents, setDailyEvents] = useState<DailyEvent[]>([]);
   const [weeklyTrends, setWeeklyTrends] = useState<PerformanceTrend[]>([]);
@@ -32,13 +45,36 @@ export default function DriversPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Fetch the list of drivers
+    const fetchDrivers = async () => {
+      try {
+        const response = await fetch("/api/fleet-metrics");
+        const data: any = await response.json();
+        setDrivers(
+          data.drivers_data.map((driver: any) => ({
+            driver_id: driver.driver_id,
+            driver_name: driver.driver_name,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching drivers list:", error);
+      }
+    };
+
+    fetchDrivers();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedDriverId) return;
+
     const fetchDriverData = async () => {
       try {
         const response = await fetch("/api/fleet-metrics");
         const data: any = await response.json();
 
         const driverData = data.drivers_data.find(
-          (driver: { driver_id: string }) => driver.driver_id === "DR-2024-007"
+          (driver: { driver_id: string }) =>
+            driver.driver_id === selectedDriverId
         );
 
         if (driverData) {
@@ -49,7 +85,8 @@ export default function DriversPage() {
             safetyScore: parseFloat(driverData.safety_score?.value || "0"),
             ecoScore: parseFloat(driverData.eco_score?.value || "0"),
             totalTrips: driverData.monthly_statistics?.total_trips || 0,
-            totalDistance: driverData.monthly_statistics?.total_distance || "0 km",
+            totalDistance:
+              driverData.monthly_statistics?.total_distance || "0 km",
             fuelSaved: driverData.monthly_statistics?.fuel_saved || "0 L",
             co2Reduced: driverData.monthly_statistics?.co2_reduced || "0 kg",
             alertsToday: driverData.safety_records?.safety_violations || 0,
@@ -58,9 +95,11 @@ export default function DriversPage() {
             overallRank: driverData.safety_score?.rank || 0,
             improvedMetrics: driverData.improvedMetrics || [],
             needsImprovement: driverData.needsImprovement || [],
-            incidentFreeDays: driverData.safety_records?.incident_free_days || 0,
+            incidentFreeDays:
+              driverData.safety_records?.incident_free_days || 0,
             perfectTrips: driverData.safety_records?.perfect_trips || "0%",
-            completedModules: driverData.training_status?.completed_modules || "0/0",
+            completedModules:
+              driverData.training_status?.completed_modules || "0/0",
             certifications: driverData.training_status?.certifications || 0,
           });
 
@@ -72,18 +111,28 @@ export default function DriversPage() {
               location: event.location,
               impact: event.impact,
               severity:
-                event.event_type === "Harsh Braking" || event.event_type === "Excessive Idling"
+                event.event_type === "Harsh Braking" ||
+                event.event_type === "Excessive Idling"
                   ? "medium"
                   : "positive",
             }))
           );
 
           setDrivingSkills([
-            { skill: "Acceleration", score: driverData.acceleration_score || 85 },
+            {
+              skill: "Acceleration",
+              score: driverData.acceleration_score || 85,
+            },
             { skill: "Braking", score: driverData.braking_score || 75 },
             { skill: "Cornering", score: driverData.cornering_score || 90 },
-            { skill: "Speed Control", score: driverData.speed_control_score || 88 },
-            { skill: "Following Distance", score: driverData.following_distance_score || 92 },
+            {
+              skill: "Speed Control",
+              score: driverData.speed_control_score || 88,
+            },
+            {
+              skill: "Following Distance",
+              score: driverData.following_distance_score || 92,
+            },
             { skill: "Eco-Driving", score: driverData.eco_driving_score || 86 },
           ]);
 
@@ -101,7 +150,7 @@ export default function DriversPage() {
     };
 
     fetchDriverData();
-  }, []);
+  }, [selectedDriverId]);
 
   const fetchSuggestions = async () => {
     setLoading(true);
@@ -148,16 +197,32 @@ export default function DriversPage() {
           Driver Analytics
         </h1>
         <div className="flex space-x-4">
-          {/* <Button variant="ghost">Routes</Button> */}
-          {/* <Button variant="ghost">Vehicles</Button> */}
           <a href="/dashboard">
             <Button variant="ghost">Overview</Button>
           </a>
-          {/* <Button variant="ghost">Reports</Button> */}
           <SignedIn>
             <UserButton />
           </SignedIn>
         </div>
+      </div>
+
+      {/* Driver Selector */}
+      <div className="mb-6">
+        <Select
+          onValueChange={setSelectedDriverId}
+          defaultValue={selectedDriverId}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select Driver" />
+          </SelectTrigger>
+          <SelectContent>
+            {drivers.map((driver) => (
+              <SelectItem key={driver.driver_id} value={driver.driver_id}>
+                {driver.driver_name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {driverMetrics ? (
@@ -247,7 +312,9 @@ export default function DriversPage() {
                       <AlertTriangle className="w-4 h-4 text-yellow-500" />
                       <span className="text-sm">Alerts</span>
                     </div>
-                    <span className="font-medium">{driverMetrics.alertsToday}</span>
+                    <span className="font-medium">
+                      {driverMetrics.alertsToday}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <div className="flex items-center gap-2">
@@ -336,7 +403,10 @@ export default function DriversPage() {
                     </h4>
                     <ul className="space-y-2">
                       {driverMetrics.improvedMetrics.map((metric, index) => (
-                        <li key={index} className="text-sm flex items-center gap-2">
+                        <li
+                          key={index}
+                          className="text-sm flex items-center gap-2"
+                        >
                           <span className="w-2 h-2 bg-green-500 rounded-full" />
                           {metric}
                         </li>
@@ -351,7 +421,10 @@ export default function DriversPage() {
                     </h4>
                     <ul className="space-y-2">
                       {driverMetrics.needsImprovement.map((metric, index) => (
-                        <li key={index} className="text-sm flex items-center gap-2">
+                        <li
+                          key={index}
+                          className="text-sm flex items-center gap-2"
+                        >
                           <span className="w-2 h-2 bg-yellow-500 rounded-full" />
                           {metric}
                         </li>
@@ -374,7 +447,11 @@ export default function DriversPage() {
                   <p>Loading suggestions...</p>
                 ) : (
                   <div className="space-y-2">
-                    {suggestions ? parseFeedback(suggestions) : <p>No suggestions available.</p>}
+                    {suggestions ? (
+                      parseFeedback(suggestions)
+                    ) : (
+                      <p>No suggestions available.</p>
+                    )}
                   </div>
                 )}
                 <Button
@@ -394,7 +471,9 @@ export default function DriversPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Total Distance</span>
-                  <span className="font-medium">{driverMetrics.totalDistance}</span>
+                  <span className="font-medium">
+                    {driverMetrics.totalDistance}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Fuel Saved</span>
@@ -402,7 +481,9 @@ export default function DriversPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>CO2 Reduced</span>
-                  <span className="font-medium">{driverMetrics.co2Reduced}</span>
+                  <span className="font-medium">
+                    {driverMetrics.co2Reduced}
+                  </span>
                 </div>
               </div>
             </div>
@@ -412,15 +493,21 @@ export default function DriversPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Incident-Free Days</span>
-                  <span className="font-medium">{driverMetrics.incidentFreeDays}</span>
+                  <span className="font-medium">
+                    {driverMetrics.incidentFreeDays}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Safety Violations</span>
-                  <span className="font-medium">{driverMetrics.alertsToday}</span>
+                  <span className="font-medium">
+                    {driverMetrics.alertsToday}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Perfect Trips</span>
-                  <span className="font-medium">{driverMetrics.perfectTrips}</span>
+                  <span className="font-medium">
+                    {driverMetrics.perfectTrips}
+                  </span>
                 </div>
               </div>
             </div>
@@ -430,11 +517,15 @@ export default function DriversPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Completed Modules</span>
-                  <span className="font-medium">{driverMetrics.completedModules}</span>
+                  <span className="font-medium">
+                    {driverMetrics.completedModules}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Certifications</span>
-                  <span className="font-medium">{driverMetrics.certifications}</span>
+                  <span className="font-medium">
+                    {driverMetrics.certifications}
+                  </span>
                 </div>
               </div>
             </div>
