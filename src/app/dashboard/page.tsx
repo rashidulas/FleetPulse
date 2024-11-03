@@ -21,6 +21,7 @@ import {
   Legend,
 } from "recharts";
 import Map from "@/components/Map";
+import EmissionSummary from "@/components/EmissionSummary";
 
 // Types and Interfaces
 interface FleetMetrics {
@@ -252,10 +253,38 @@ const FleetDashboard: React.FC = () => {
         <CardTitle>Active Routes</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="bg-gray-100 h-[300px] rounded-lg overflow-hidden">
-          <Map/>
+      <div className="bg-gray-100 h-[600px] rounded-lg overflow-hidden">
+          <Map />
         </div>
       </CardContent>
+      {/* <EmissionSummary 
+        ecoFriendlyDirections={{ 
+          routes: [
+            {
+              legs: [
+                {
+                  distance: {
+                    value: 1000,
+                  },
+                },
+              ],
+            },
+          ],
+        }} 
+        alternativeDirections={{ 
+          routes: [
+            {
+              legs: [
+                {
+                  distance: {
+                    value: 1200,
+                  },
+                },
+              ],
+            },
+          ],
+        }} 
+      /> */}
     </Card>
 
         {/* Performance Trends */}
