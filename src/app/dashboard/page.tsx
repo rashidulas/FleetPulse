@@ -93,9 +93,12 @@ const FleetDashboard: React.FC = () => {
   ]);
 
   const performanceData = [
-    { month: "Jan", efficiency: 80, emissions: 20, safety: 90 },
-    { month: "Feb", efficiency: 85, emissions: 18, safety: 92 },
-    { month: "Mar", efficiency: 78, emissions: 22, safety: 88 },
+    { month: "Jan", efficiency: 85, emissions: 75, safety: 88 },
+    { month: "Feb", efficiency: 88, emissions: 72, safety: 90 },
+    { month: "Mar", efficiency: 92, emissions: 68, safety: 92 },
+    { month: "Apr", efficiency: 90, emissions: 70, safety: 89 },
+    { month: "May", efficiency: 94, emissions: 65, safety: 93 },
+    { month: "Jun", efficiency: 91, emissions: 67, safety: 91 },
   ];
 
   interface ApiResponse {
@@ -283,10 +286,10 @@ const FleetDashboard: React.FC = () => {
             <Leaf className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{fleetMetrics.carbonSaved}</div>
-            <p className="text-xs text-muted-foreground">
-              Carbon emissions saved
-            </p>
+            <div className="text-2xl font-bold text-emerald-900">
+              {fleetMetrics.carbonSaved}
+            </div>
+            <p className="text-xs text-emerald-600">Carbon emissions saved</p>
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span>Eco Score</span>
@@ -336,7 +339,7 @@ const FleetDashboard: React.FC = () => {
         {/* Route Optimization Map */}
         <Card>
           <CardHeader>
-            <CardTitle>Active Routes</CardTitle>
+            <CardTitle>Fuel Efficient Route</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-gray-100 h-[600px] rounded-lg overflow-hidden">
@@ -388,7 +391,7 @@ const FleetDashboard: React.FC = () => {
         <div className="col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Alerts</CardTitle>
+              <CardTitle>Recent Alerts Based on AI</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="divide-y">
