@@ -23,6 +23,9 @@ AWS_REGION = "us-west-2"
 AWS_ACCESS_KEY_ID = "AKIA34AMC7OUCR37Z43T"
 AWS_SECRET_ACCESS_KEY = "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"
 AWS_S3_BUCKET_NAME = "databricks-workspace-stack-20dd6-bucket"
+DATABRICKS_JOB_ID="422320825949353"
+DATABRICKS_WORKSPACE_URL="https://dbc-8f2e4978-1df7.cloud.databricks.com"
+DATABRICKS_API_TOKEN="dapi07cfa7a6f9a7e204e1262f569f7a8f2a"
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/pages/functions/bindings/#workers-ai

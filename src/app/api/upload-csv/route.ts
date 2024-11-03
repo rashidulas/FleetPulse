@@ -1,6 +1,9 @@
-// src/app/api/upload-csv/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  HeadObjectCommand,
+} from "@aws-sdk/client-s3";
 
 export const runtime = "edge";
 
@@ -30,6 +33,38 @@ const uploadToS3 = async (buffer: Buffer, filename: string) => {
   }
 };
 
+const triggerDatabricksJob = async () => {
+  const databricksToken = process.env.DATABRICKS_API_TOKEN;
+  const databricksWorkspaceUrl = process.env.DATABRICKS_WORKSPACE_URL;
+  const databricksJobId = process.env.DATABRICKS_JOB_ID;
+
+  try {
+    const response = await fetch(
+      `${databricksWorkspaceUrl}/api/2.1/jobs/run-now`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${databricksToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ job_id: databricksJobId }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorDetails = await response.json();
+      console.error("Error triggering Databricks job:", errorDetails);
+      return false;
+    }
+
+    console.log("Databricks job triggered successfully");
+    return true;
+  } catch (error) {
+    console.error("Error triggering Databricks job:", error);
+    return false;
+  }
+};
+
 export async function POST(req: NextRequest) {
   try {
     // Create a FormData instance from the request body
@@ -41,24 +76,35 @@ export async function POST(req: NextRequest) {
       if (!(file instanceof Blob)) return false;
 
       const buffer = Buffer.from(await file.arrayBuffer());
-      const timestamp = new Date().getTime();
       const originalName = file.name || "untitled.csv";
-      const filename = `${timestamp}-${originalName}`;
 
-      return await uploadToS3(buffer, filename);
+      // Upload if the file does not exist
+      return await uploadToS3(buffer, originalName);
     });
 
     const results = await Promise.all(uploadPromises);
 
     // Check if all uploads were successful
-    const allSuccessful = results.every((result) => result === true);
+    const allSuccessful = results.every((result) => result !== false);
 
     if (allSuccessful) {
-      return NextResponse.json({ message: "Files uploaded successfully" });
+      // Trigger Databricks job after successful upload
+      const jobTriggered = await triggerDatabricksJob();
+
+      if (jobTriggered) {
+        return NextResponse.json({
+          message: "Files uploaded successfully and Databricks job triggered",
+        });
+      } else {
+        return NextResponse.json(
+          { message: "Files uploaded, but failed to trigger Databricks job" },
+          { status: 500 }
+        );
+      }
     } else {
       return NextResponse.json(
-        { message: "Some files failed to upload" },
-        { status: 500 }
+        { message: "Some files were skipped as they already exist" },
+        { status: 200 }
       );
     }
   } catch (error) {
