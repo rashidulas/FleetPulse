@@ -20,6 +20,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import Map from "@/components/Map";
 
 // Types and Interfaces
 interface FleetMetrics {
@@ -143,6 +144,7 @@ const FleetDashboard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-semibold">FleetPlus Dashboard</h1>
+        {/* < Map/> */}
         <div className="flex space-x-4">
           <Button variant="ghost">Routes</Button>
           <Button variant="ghost">Vehicles</Button>
@@ -244,17 +246,17 @@ const FleetDashboard: React.FC = () => {
 
       {/* Charts and Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Route Optimization Map Placeholder */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Active Routes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-gray-100 h-[300px] rounded-lg flex items-center justify-center">
-              <p className="text-gray-500">Interactive Map Component</p>
-            </div>
-          </CardContent>
-        </Card>
+  {/* Route Optimization Map */}
+    <Card>
+      <CardHeader>
+        <CardTitle>Active Routes</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="bg-gray-100 h-[300px] rounded-lg overflow-hidden">
+          <Map/>
+        </div>
+      </CardContent>
+    </Card>
 
         {/* Performance Trends */}
         <Card>
