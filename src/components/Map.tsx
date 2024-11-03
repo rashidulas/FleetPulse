@@ -9,17 +9,29 @@ import {
 
 const mapContainerStyle = {
   width: "100%",
-  height: "100%",  // Use 100% to fit within parent container
+  height: "300px",
 };
 
 const center = {
-  lat: 40.7128,  // Set initial latitude
-  lng: -74.0060, // Set initial longitude
+  lat: 40.7128,
+  lng: -74.0060,
 };
 
-export default function MapWithDirections() {
-  const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
+// Constants for average truck fuel efficiency and diesel CO₂ factor
+const FUEL_EFFICIENCY_KM_PER_LITER = 2.5; // in km per liter
+const CARBON_FACTOR_KG_CO2_PER_LITER = 2.68; // in kg CO₂ per liter
+
+// Calculate emissions based on distance
+const calculateEmissions = (distanceKm: number): number => {
+  const fuelConsumed = distanceKm / FUEL_EFFICIENCY_KM_PER_LITER;
+  return fuelConsumed * CARBON_FACTOR_KG_CO2_PER_LITER;
+};
+
+export default function MapWithSideBySideRoutes() {
+  const [ecoFriendlyDirections, setEcoFriendlyDirections] = useState<google.maps.DirectionsResult | null>(null);
+  const [alternativeDirections, setAlternativeDirections] = useState<google.maps.DirectionsResult | null>(null);
+  const [ecoRouteDistance, setEcoRouteDistance] = useState<number | null>(null);
+  const [altRouteDistance, setAltRouteDistance] = useState<number | null>(null);
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [originAutocomplete, setOriginAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
@@ -30,12 +42,19 @@ export default function MapWithDirections() {
     libraries: ["places"],
   });
 
-  const handleDirectionsCallback = useCallback((response: google.maps.DirectionsResult | null) => {
-    if (response !== null && response.routes && response.routes.length > 0) {
-      setDirections(response);
-    } else {
-      setError("Directions request failed.");
-      console.error("Directions request failed:", response);
+  const handleEcoFriendlyDirectionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    if (status === google.maps.DirectionsStatus.OK && result && result.routes.length > 0) {
+      setEcoFriendlyDirections(result);
+      const distance = result.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0);
+      setEcoRouteDistance(distance / 1000); // Convert meters to kilometers
+    }
+  }, []);
+
+  const handleAlternativeDirectionsCallback = useCallback((result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    if (status === google.maps.DirectionsStatus.OK && result && result.routes.length > 0) {
+      setAlternativeDirections(result);
+      const distance = result.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0);
+      setAltRouteDistance(distance / 1000); // Convert meters to kilometers
     }
   }, []);
 
@@ -67,10 +86,22 @@ export default function MapWithDirections() {
 
   if (!isLoaded) return <div>Loading Maps...</div>;
 
+  // Calculate emissions
+  const ecoEmissions = ecoRouteDistance ? calculateEmissions(ecoRouteDistance) : null;
+  const altEmissions = altRouteDistance ? calculateEmissions(altRouteDistance) : null;
+
+  // Determine which route is "eco-friendly" based on emissions
+  const ecoDistance = ecoEmissions !== null && altEmissions !== null && ecoEmissions <= altEmissions ? ecoRouteDistance : altRouteDistance;
+  const altDistance = ecoEmissions !== null && altEmissions !== null && ecoEmissions > altEmissions ? ecoRouteDistance : altRouteDistance;
+  const ecoFriendlyEmissions = ecoEmissions !== null && altEmissions !== null && ecoEmissions <= altEmissions ? ecoEmissions : altEmissions;
+  const alternativeEmissions = ecoEmissions !== null && altEmissions !== null && ecoEmissions > altEmissions ? ecoEmissions : altEmissions;
+  const emissionsSavings = alternativeEmissions && ecoFriendlyEmissions ? alternativeEmissions - ecoFriendlyEmissions : null;
+  const reductionPercentage = emissionsSavings && alternativeEmissions ? ((emissionsSavings / alternativeEmissions) * 100).toFixed(1) : null;
+
   return (
-    <div className="map-container h-full w-full">
+    <div>
       {/* Location Input Fields */}
-      <div className="location-inputs mb-2 flex space-x-4 p-2 bg-white rounded-lg shadow-md">
+      <div className="location-inputs mb-4 flex space-x-4 p-2 bg-white rounded-lg shadow-md w-full max-w-2xl mx-auto">
         <Autocomplete onLoad={onLoadOrigin} onPlaceChanged={onOriginPlaceChanged}>
           <input
             type="text"
@@ -91,21 +122,87 @@ export default function MapWithDirections() {
         </Autocomplete>
       </div>
 
-      {/* Map with Directions */}
-      <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={10}>
-        {origin && destination && (
-          <DirectionsService
-            options={{
-              origin: origin,
-              destination: destination,
-              travelMode: google.maps.TravelMode.DRIVING,
-            }}
-            callback={handleDirectionsCallback}
-          />
-        )}
-        {directions && <DirectionsRenderer directions={directions} />}
-        {error && <p>{error}</p>}
-      </GoogleMap>
+      {/* Maps Container */}
+      <div className="flex flex-row space-x-4 w-full max-w-6xl mx-auto">
+        {/* Eco-Friendly Route Map */}
+        <div className="flex-1">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={center}
+            zoom={10}
+          >
+            {origin && destination && (
+              <DirectionsService
+                options={{
+                  origin,
+                  destination,
+                  travelMode: google.maps.TravelMode.DRIVING,
+                  avoidHighways: true,
+                }}
+                callback={handleEcoFriendlyDirectionsCallback}
+              />
+            )}
+            {ecoFriendlyDirections && (
+              <DirectionsRenderer
+                directions={ecoFriendlyDirections}
+                options={{
+                  polylineOptions: {
+                    strokeColor: "green",
+                    strokeOpacity: 0.6,
+                    strokeWeight: 6,
+                  },
+                }}
+              />
+            )}
+          </GoogleMap>
+        </div>
+
+        {/* Alternative Route Map */}
+        <div className="flex-1">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={center}
+            zoom={10}
+          >
+            {origin && destination && (
+              <DirectionsService
+                options={{
+                  origin,
+                  destination,
+                  travelMode: google.maps.TravelMode.DRIVING,
+                  avoidHighways: false,
+                }}
+                callback={handleAlternativeDirectionsCallback}
+              />
+            )}
+            {alternativeDirections && (
+              <DirectionsRenderer
+                directions={alternativeDirections}
+                options={{
+                  polylineOptions: {
+                    strokeColor: "red",
+                    strokeOpacity: 0.6,
+                    strokeWeight: 6,
+                  },
+                }}
+              />
+            )}
+          </GoogleMap>
+        </div>
+      </div>
+
+      {/* Emission Savings Summary */}
+      {ecoDistance !== null && altDistance !== null && (
+        <div className="emission-summary mt-4 p-4 bg-[#1B1F2B] rounded-lg w-full max-w-2xl mx-auto text-center">
+          <h3 className="text-lg text-white font-bold">Emission Savings Summary</h3>
+          <p>Eco-Friendly Route Distance: <strong>{ecoDistance.toFixed(2)} km</strong></p>
+          <p>Alternative Route Distance: <strong>{altDistance.toFixed(2)} km</strong></p>
+          <p>Eco-Friendly Route Emissions: <strong>{ecoFriendlyEmissions !== null ? ecoFriendlyEmissions.toFixed(2) : "N/A"} kg CO₂</strong></p>
+          <p>Alternative Route Emissions: <strong>{alternativeEmissions !== null ? alternativeEmissions.toFixed(2) : "N/A"} kg CO₂</strong></p>
+          <p>CO₂ Savings: <strong>{emissionsSavings !== null ? emissionsSavings.toFixed(2) : "N/A"} kg CO₂</strong></p>
+          <p>Reduction Percentage: <strong>{reductionPercentage}%</strong></p>
+        </div>
+      )}
     </div>
   );
 }
