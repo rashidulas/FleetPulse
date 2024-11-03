@@ -174,7 +174,7 @@ export default function DriversPage() {
 
         <Card>
           <CardContent className="pt-6">
-            <h3 className="font-medium mb-4">Today's Stats</h3>
+            <h3 className="font-medium mb-4">Today&apos;s Stats</h3>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export default function DriversPage() {
         <div className="md:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Today's Events</CardTitle>
+              <CardTitle>Today&apos;s Events</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="divide-y">

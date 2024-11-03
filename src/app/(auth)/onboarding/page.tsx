@@ -1,12 +1,12 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+export const runtime = "edge";
 
 async function Page() {
   const user = await currentUser();
   if (!user) return null;
   const userEmail = user?.emailAddresses[0]?.emailAddress;
-
 
   // If not onboarded, proceed with rendering the onboarding form
   const userData = { id: user.id, email: userEmail };
@@ -17,8 +17,7 @@ async function Page() {
       <p className="mt-3 text-base-regular text-light-2">
         Complete your profile.
       </p>
-      <section className="mt-9 bg-dark-2 p-10">
-      </section>
+      <section className="mt-9 bg-dark-2 p-10"></section>
     </main>
   );
 }

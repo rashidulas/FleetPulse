@@ -3,6 +3,8 @@ import Link from "next/link";
 import treeTransition from "./truckFleet3.webp"; // Import the image
 import newImage from "./DashboardSS.png"; // Import the image you want to display
 
+export const runtime = "edge";
+
 export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col font-sans overflow-y-auto">
