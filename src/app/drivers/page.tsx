@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -80,6 +81,53 @@ export default function DriversPage() {
     { day: "Thu", safetyScore: 91, ecoScore: 90, efficiency: 89 },
     { day: "Fri", safetyScore: 89, ecoScore: 86, efficiency: 87 },
   ];
+
+  // Cloudflare WorkersAI Setup
+  const [suggestions, setSuggestions] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchSuggestions = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/cloudflare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: driverMetrics.name,
+          experience: driverMetrics.experience,
+          safetyScore: driverMetrics.safetyScore,
+          ecoScore: driverMetrics.ecoScore,
+          needsImprovement: driverMetrics.needsImprovement,
+          totalTrips: driverMetrics.totalTrips,
+          alertsToday: driverMetrics.alertsToday,
+        }),
+      });
+      const data = await response.json();
+      if (data.suggestions) {
+        setSuggestions(data.suggestions);
+      } else {
+        setSuggestions("No suggestions available.");
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+      setSuggestions("Error fetching suggestions.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to parse the feedback text and convert to HTML
+  const parseFeedback = (text: string) => {
+    // Split by new lines and then process each line
+    return text.split('\n').map((line, index) => {
+      // Replace **bold text** with <strong>bold text</strong>
+      const processedLine = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      return (
+        <div key={index} dangerouslySetInnerHTML={{ __html: processedLine }} className="mb-2" />
+      );
+    });
+  };
+
 
   return (
     <div className="bg-white p-8">
@@ -307,6 +355,30 @@ export default function DriversPage() {
                 </ul>
               </div>
             </div>
+          </CardContent>
+        </Card>
+      </div>
+      {/* Suggestions Section */}
+      <div className="mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Suggestions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <p>Loading suggestions...</p>
+            ) : (
+              <div className="space-y-2">
+                {suggestions ? (
+                  parseFeedback(suggestions)
+                ) : (
+                  <p>No suggestions available.</p>
+                )}
+              </div>
+            )}
+            <Button onClick={fetchSuggestions} className="mt-4" variant="primary">
+              Get Suggestions
+            </Button>
           </CardContent>
         </Card>
       </div>
