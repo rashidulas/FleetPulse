@@ -23,7 +23,7 @@ import {
   Legend,
 } from "recharts";
 import Map from "@/components/Map";
-import EmissionSummary from "@/components/EmissionSummary";
+import { useRouter } from "next/navigation";
 
 // Types and Interfaces
 interface FleetMetrics {
@@ -226,12 +226,19 @@ const FleetDashboard: React.FC = () => {
     }
   };
 
+  const router = useRouter();
+
+  const handleNavigation = () => {
+    router.push("/"); // Route to the main page
+  };
+
   return (
     <div className="bg-white p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
+      <Button className="text-4xl font-semiboldbg-gradient-to-r from-emerald-600 to-green-800 bg-clip-text text-transparent" onClick={handleNavigation}>FleetPulse</Button>
         <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-800 bg-clip-text text-transparent">
-          FleetPlus Dashboard
+           Dashboard
         </h1>
         {/* < Map/> */}
         <div className="flex space-x-4">
