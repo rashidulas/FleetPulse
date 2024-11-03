@@ -33,7 +33,7 @@ export default function DriversPage() {
     const fetchDriverData = async () => {
       try {
         const response = await fetch("/api/fleet-metrics");
-        const data = await response.json();
+        const data: any = await response.json();
 
         const driverData = data.drivers_data.find(
           (driver: { driver_id: string }) => driver.driver_id === "DR-2024-007"
@@ -63,7 +63,7 @@ export default function DriversPage() {
           });
 
           setDailyEvents(
-            driverData.recent_events.map((event, index) => ({
+            driverData.recent_events.map((event: any, index: any) => ({
               id: index + 1,
               time: event.time,
               type: event.event_type,
