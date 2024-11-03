@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  S3Client,
-  PutObjectCommand,
-  HeadObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 export const runtime = "edge";
 
@@ -33,7 +29,8 @@ const uploadToS3 = async (buffer: Buffer, filename: string) => {
   }
 };
 
-const triggerDatabricksJob = async () => {
+// Function to trigger the first Databricks job
+const triggerFirstDatabricksJob = async () => {
   const databricksToken = process.env.DATABRICKS_API_TOKEN;
   const databricksWorkspaceUrl = process.env.DATABRICKS_WORKSPACE_URL;
   const databricksJobId = process.env.DATABRICKS_JOB_ID;
@@ -53,14 +50,47 @@ const triggerDatabricksJob = async () => {
 
     if (!response.ok) {
       const errorDetails = await response.json();
-      console.error("Error triggering Databricks job:", errorDetails);
+      console.error("Error triggering first Databricks job:", errorDetails);
       return false;
     }
 
-    console.log("Databricks job triggered successfully");
+    console.log("First Databricks job triggered successfully");
     return true;
   } catch (error) {
-    console.error("Error triggering Databricks job:", error);
+    console.error("Error triggering first Databricks job:", error);
+    return false;
+  }
+};
+
+// Function to trigger the second Databricks job
+const triggerSecondDatabricksJob = async () => {
+  const databricksToken = process.env.DATABRICKS_API_TOKEN;
+  const databricksWorkspaceUrl = process.env.DATABRICKS_WORKSPACE_URL;
+  const secondDatabricksJobId = process.env.SECOND_DATABRICKS_JOB_ID;
+
+  try {
+    const response = await fetch(
+      `${databricksWorkspaceUrl}/api/2.1/jobs/run-now`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${databricksToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ job_id: secondDatabricksJobId }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorDetails = await response.json();
+      console.error("Error triggering second Databricks job:", errorDetails);
+      return false;
+    }
+
+    console.log("Second Databricks job triggered successfully");
+    return true;
+  } catch (error) {
+    console.error("Error triggering second Databricks job:", error);
     return false;
   }
 };
@@ -88,16 +118,29 @@ export async function POST(req: NextRequest) {
     const allSuccessful = results.every((result) => result !== false);
 
     if (allSuccessful) {
-      // Trigger Databricks job after successful upload
-      const jobTriggered = await triggerDatabricksJob();
+      // Trigger both Databricks jobs after successful upload
+      const firstJobTriggered = await triggerFirstDatabricksJob();
+      const secondJobTriggered = await triggerSecondDatabricksJob();
 
-      if (jobTriggered) {
+      if (firstJobTriggered && secondJobTriggered) {
         return NextResponse.json({
-          message: "Files uploaded successfully and Databricks job triggered",
+          message:
+            "Files uploaded successfully and both Databricks jobs triggered",
         });
+      } else if (firstJobTriggered || secondJobTriggered) {
+        return NextResponse.json(
+          {
+            message:
+              "Files uploaded, but one of the Databricks jobs failed to trigger",
+          },
+          { status: 500 }
+        );
       } else {
         return NextResponse.json(
-          { message: "Files uploaded, but failed to trigger Databricks job" },
+          {
+            message:
+              "Files uploaded, but failed to trigger both Databricks jobs",
+          },
           { status: 500 }
         );
       }
