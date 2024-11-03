@@ -102,7 +102,7 @@ export default function DriversPage() {
           alertsToday: driverMetrics.alertsToday,
         }),
       });
-      const data = (await response.json()) as { suggestions?: string };
+      const data: { suggestions?: string } = await response.json();
       if (data.suggestions) {
         setSuggestions(data.suggestions);
       } else {

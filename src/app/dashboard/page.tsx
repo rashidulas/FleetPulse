@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,108 +25,188 @@ import EmissionSummary from "@/components/EmissionSummary";
 
 // Types and Interfaces
 interface FleetMetrics {
-  // Operational Metrics
-  totalVehicles: number;
-  activeRoutes: number;
-  onTimeDeliveries: number;
-  utilizationRate: number;
-
-  // Environmental Metrics
-  carbonSaved: number;
-  fuelEfficiency: number;
+  activeRoutes: string;
+  utilizationRate: string;
+  onTimeDeliveries: string;
+  carbonSaved: string;
   ecoScore: number;
-  renewableEnergyUse: number;
-
-  // Financial Metrics
-  fuelCosts: number;
-  maintenanceCosts: number;
-  costPerMile: number;
-  savingsThisMonth: number;
-
-  // Safety & Compliance
-  safetyScore: number;
-  complianceRate: number;
-  incidentRate: number;
-
-  // Vehicle Health
-  maintenanceDue: number;
-  healthScore: number;
-  batteryHealth: number;
-  tirePressure: number;
+  fuelEfficiency: string;
+  savingsThisMonth: string;
+  costPerMile: string;
+  maintenanceCosts: string;
+  healthScore: string;
+  maintenanceDue: string;
+  batteryHealth: string;
+  tirePressure: string;
+  totalVehicles?: string;
 }
 
 interface Alert {
   id: number;
   type: string;
+  severity: string;
   vehicle: string;
-  severity: "high" | "medium" | "low";
   message: string;
 }
 
-
-interface PerformanceData {
-  month: string;
-  efficiency: number;
-  emissions: number;
-  safety: number;
-}
-
 const FleetDashboard: React.FC = () => {
-  // Sample fleet metrics
-  const fleetMetrics: FleetMetrics = {
-    totalVehicles: 48,
-    activeRoutes: 35,
-    onTimeDeliveries: 94.5,
-    utilizationRate: 87,
-    carbonSaved: 1240,
-    fuelEfficiency: 8.2,
-    ecoScore: 92,
-    renewableEnergyUse: 35,
-    fuelCosts: 12450,
-    maintenanceCosts: 8750,
-    costPerMile: 1.24,
-    savingsThisMonth: 4520,
-    safetyScore: 96,
-    complianceRate: 99.8,
-    incidentRate: 0.5,
-    maintenanceDue: 3,
-    healthScore: 88,
-    batteryHealth: 92,
-    tirePressure: 95,
-  };
+  const [fleetMetrics, setFleetMetrics] = useState<FleetMetrics>({
+    activeRoutes: "",
+    utilizationRate: "",
+    onTimeDeliveries: "",
+    carbonSaved: "",
+    ecoScore: 0,
+    fuelEfficiency: "",
+    savingsThisMonth: "",
+    costPerMile: "",
+    maintenanceCosts: "",
+    healthScore: "",
+    maintenanceDue: "",
+    batteryHealth: "",
+    tirePressure: "",
+  });
 
-  const recentAlerts: Alert[] = [
+  const [recentAlerts, setRecentAlerts] = useState<Alert[]>([
     {
       id: 1,
-      type: "Maintenance Required",
-      vehicle: "FLT-2024-001",
+      type: "Engine Issue",
       severity: "high",
-      message: "Brake inspection due in 24 hours",
+      vehicle: "Truck 1",
+      message: "Engine overheating",
     },
     {
       id: 2,
-      type: "Route Optimization",
-      vehicle: "FLT-2024-015",
+      type: "Low Tire Pressure",
       severity: "medium",
-      message: "Alternative route available - 15% fuel saving",
+      vehicle: "Truck 2",
+      message: "Front left tire pressure low",
     },
     {
       id: 3,
-      type: "Driver Behavior",
-      vehicle: "FLT-2024-008",
+      type: "Battery Low",
       severity: "low",
-      message: "Excessive idling detected",
+      vehicle: "Truck 3",
+      message: "Battery charge below 20%",
     },
+  ]);
+
+  const performanceData = [
+    { month: "Jan", efficiency: 80, emissions: 20, safety: 90 },
+    { month: "Feb", efficiency: 85, emissions: 18, safety: 92 },
+    { month: "Mar", efficiency: 78, emissions: 22, safety: 88 },
   ];
 
-  const performanceData: PerformanceData[] = [
-    { month: "Jan", efficiency: 85, emissions: 75, safety: 88 },
-    { month: "Feb", efficiency: 88, emissions: 72, safety: 90 },
-    { month: "Mar", efficiency: 92, emissions: 68, safety: 92 },
-    { month: "Apr", efficiency: 90, emissions: 70, safety: 89 },
-    { month: "May", efficiency: 94, emissions: 65, safety: 93 },
-    { month: "Jun", efficiency: 91, emissions: 67, safety: 91 },
-  ];
+  interface ApiResponse {
+    fleet_metrics: {
+      fleet_status: {
+        active_vehicles: string;
+        utilization: string;
+        on_time_delivery: string;
+      };
+      environmental_impact: {
+        carbon_emissions_saved: string;
+        eco_score: number;
+        fuel_efficiency: string;
+      };
+      financial_overview: {
+        monthly_savings: string;
+        cost_per_mile: string;
+        maintenance_costs: string;
+      };
+      vehicle_health: {
+        overall_health: string;
+        maintenance_due: string;
+        battery_health: string;
+        tire_health: string;
+      };
+    };
+    drivers_data: Array<{
+      driver_id: string;
+      driver_name: string;
+      experience: number;
+      safety_score: { rank: number; value: string };
+      eco_score: { rank: number; value: string };
+      efficiency: { rank: number; value: string };
+      compliance: { rank: number; value: string };
+      monthly_statistics: {
+        total_trips: number;
+        total_distance: string;
+        fuel_saved: string;
+        co2_reduced: string;
+      };
+      safety_records: {
+        incident_free_days: number;
+        safety_violations: number;
+        perfect_trips: string;
+      };
+      training_status: {
+        completed_modules: string;
+        certifications: number;
+      };
+      recent_events: Array<{
+        event_type: string;
+        time: string;
+        location: string;
+        impact: string;
+      }>;
+    }>;
+  }
+
+  useEffect(() => {
+    const fetchFleetData = async () => {
+      try {
+        const response = await fetch("/api/fleet-metrics");
+        const data = (await response.json()) as ApiResponse;
+
+        const apiMetrics = data.fleet_metrics;
+        setFleetMetrics({
+          activeRoutes:
+            apiMetrics?.fleet_status?.active_vehicles ||
+            fleetMetrics.activeRoutes,
+          utilizationRate:
+            apiMetrics?.fleet_status?.utilization ||
+            fleetMetrics.utilizationRate,
+          onTimeDeliveries:
+            apiMetrics?.fleet_status?.on_time_delivery ||
+            fleetMetrics.onTimeDeliveries,
+          carbonSaved:
+            apiMetrics?.environmental_impact?.carbon_emissions_saved ||
+            fleetMetrics.carbonSaved,
+          ecoScore:
+            apiMetrics?.environmental_impact?.eco_score ||
+            fleetMetrics.ecoScore,
+          fuelEfficiency:
+            apiMetrics?.environmental_impact?.fuel_efficiency ||
+            fleetMetrics.fuelEfficiency,
+          savingsThisMonth:
+            apiMetrics?.financial_overview?.monthly_savings ||
+            fleetMetrics.savingsThisMonth,
+          costPerMile:
+            apiMetrics?.financial_overview?.cost_per_mile ||
+            fleetMetrics.costPerMile,
+          maintenanceCosts:
+            apiMetrics?.financial_overview?.maintenance_costs ||
+            fleetMetrics.maintenanceCosts,
+          healthScore:
+            apiMetrics?.vehicle_health?.overall_health ||
+            fleetMetrics.healthScore,
+          maintenanceDue:
+            apiMetrics?.vehicle_health?.maintenance_due ||
+            fleetMetrics.maintenanceDue,
+          batteryHealth:
+            apiMetrics?.vehicle_health?.battery_health ||
+            fleetMetrics.batteryHealth,
+          tirePressure:
+            apiMetrics?.vehicle_health?.tire_health ||
+            fleetMetrics.tirePressure,
+        });
+      } catch (error) {
+        console.error("Error fetching fleet data:", error);
+      }
+    };
+
+    fetchFleetData();
+  }, []);
 
   // Helper function for alert severity styling
   const getSeverityStyles = (severity: Alert["severity"]): string => {
@@ -167,20 +247,20 @@ const FleetDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {fleetMetrics.activeRoutes}/{fleetMetrics.totalVehicles}
+              {fleetMetrics.activeRoutes}
             </div>
             <p className="text-xs text-muted-foreground">Active vehicles</p>
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span>Utilization</span>
                 <span className="font-medium">
-                  {fleetMetrics.utilizationRate}%
+                  {fleetMetrics.utilizationRate}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span>On-Time Delivery</span>
                 <span className="font-medium">
-                  {fleetMetrics.onTimeDeliveries}%
+                  {fleetMetrics.onTimeDeliveries}
                 </span>
               </div>
             </div>
@@ -196,9 +276,7 @@ const FleetDashboard: React.FC = () => {
             <Leaf className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {fleetMetrics.carbonSaved}kg
-            </div>
+            <div className="text-2xl font-bold">{fleetMetrics.carbonSaved}</div>
             <p className="text-xs text-muted-foreground">
               Carbon emissions saved
             </p>
@@ -210,7 +288,7 @@ const FleetDashboard: React.FC = () => {
               <div className="flex items-center justify-between text-sm">
                 <span>Fuel Efficiency</span>
                 <span className="font-medium">
-                  {fleetMetrics.fuelEfficiency} km/L
+                  {fleetMetrics.fuelEfficiency}
                 </span>
               </div>
             </div>
@@ -227,18 +305,18 @@ const FleetDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${fleetMetrics.savingsThisMonth}
+              {fleetMetrics.savingsThisMonth}
             </div>
             <p className="text-xs text-muted-foreground">Monthly savings</p>
             <div className="mt-4 space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span>Cost per Mile</span>
-                <span className="font-medium">${fleetMetrics.costPerMile}</span>
+                <span className="font-medium">{fleetMetrics.costPerMile}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span>Maintenance Costs</span>
                 <span className="font-medium">
-                  ${fleetMetrics.maintenanceCosts}
+                  {fleetMetrics.maintenanceCosts}
                 </span>
               </div>
             </div>
@@ -248,17 +326,17 @@ const FleetDashboard: React.FC = () => {
 
       {/* Charts and Details Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-  {/* Route Optimization Map */}
-    <Card>
-      <CardHeader>
-        <CardTitle>Active Routes</CardTitle>
-      </CardHeader>
-      <CardContent>
-      <div className="bg-gray-100 h-[600px] rounded-lg overflow-hidden">
-          <Map />
-        </div>
-      </CardContent>
-    </Card>
+        {/* Route Optimization Map */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Active Routes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-gray-100 h-[600px] rounded-lg overflow-hidden">
+              <Map />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Performance Trends */}
         <Card>
@@ -346,12 +424,12 @@ const FleetDashboard: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span>Overall Health</span>
-                <span className="font-bold">{fleetMetrics.healthScore}%</span>
+                <span className="font-bold">{fleetMetrics.healthScore}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-green-500 h-2 rounded-full"
-                  style={{ width: `${fleetMetrics.healthScore}%` }}
+                  style={{ width: `${fleetMetrics.healthScore}` }}
                 ></div>
               </div>
               <div className="pt-4 space-y-2">
@@ -364,13 +442,13 @@ const FleetDashboard: React.FC = () => {
                 <div className="flex justify-between text-sm">
                   <span>Battery Health</span>
                   <span className="font-medium">
-                    {fleetMetrics.batteryHealth}%
+                    {fleetMetrics.batteryHealth}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tire Health</span>
                   <span className="font-medium">
-                    {fleetMetrics.tirePressure}%
+                    {fleetMetrics.tirePressure}
                   </span>
                 </div>
               </div>
