@@ -63,6 +63,7 @@ interface Alert {
   message: string;
 }
 
+
 interface PerformanceData {
   month: string;
   efficiency: number;
@@ -162,7 +163,7 @@ const FleetDashboard: React.FC = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Fleet Status</CardTitle>
-            <Truck className="h-4 w-4 text-muted-foreground" />
+            <Truck className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -192,7 +193,7 @@ const FleetDashboard: React.FC = () => {
             <CardTitle className="text-sm font-medium">
               Environmental Impact
             </CardTitle>
-            <Leaf className="h-4 w-4 text-muted-foreground" />
+            <Leaf className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -222,7 +223,7 @@ const FleetDashboard: React.FC = () => {
             <CardTitle className="text-sm font-medium">
               Financial Overview
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-green-700" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
