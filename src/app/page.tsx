@@ -1,6 +1,8 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import CSVUploadForm from "@/components/CSVUploadForm";
+import Image from 'next/image';
+import truckFleet3 from './truckFleet3.webp';
 
 export const runtime = "edge";
 
@@ -70,10 +72,11 @@ export default function Home() {
             </div>
             <div className="relative h-96">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/5 to-emerald-700/5 rounded-lg"></div>
-              <img
-                src="/api/placeholder/800/600"
-                alt="Modern delivery truck"
-                className="w-full h-full object-cover rounded-lg shadow-lg"
+              <Image 
+                src={truckFleet3} 
+                alt="Modern delivery truck" 
+                fill
+                className="object-cover rounded-lg shadow-lg" 
               />
             </div>
           </div>
