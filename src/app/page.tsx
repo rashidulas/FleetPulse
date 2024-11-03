@@ -53,11 +53,11 @@ export default function Home() {
                 </SignInButton>
               </SignedOut>
               <SignedIn>
+                <CSVUploadForm />
                 <Link href="/dashboard" passHref>
                   <button className="py-2.5 px-6 bg-teal-500 text-white rounded-md font-medium hover:bg-teal-600 transition-colors duration-200">
                     Go to Dashboard
                   </button>
-                  <CSVUploadForm />
                 </Link>
               </SignedIn>
               {/* </button> */}
