@@ -1,3 +1,5 @@
+// types/driver.ts
+
 export interface DriverMetrics {
   id: string;
   name: string;
@@ -11,6 +13,13 @@ export interface DriverMetrics {
   overallRank: number;
   improvedMetrics: string[];
   needsImprovement: string[];
+  totalDistance: string;
+  fuelSaved: string;
+  co2Reduced: string;
+  incidentFreeDays: number;
+  perfectTrips: string;
+  completedModules: string;
+  certifications: number;
 }
 
 export interface DrivingSkill {
