@@ -27,69 +27,47 @@ export const DriverPerformanceChart: React.FC<PerformanceChartProps> = ({
   return (
     <div className="h-[300px]">
       <LineChart width={500} height={300} data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#2D3343" />
-        <XAxis 
-          dataKey="day" 
-          stroke="#94A3B8"
-          tick={{ fill: '#94A3B8' }}
-        />
-        <YAxis 
-          domain={[0, 100]} 
-          stroke="#94A3B8"
-          tick={{ fill: '#94A3B8' }}
-        />
-        <Tooltip
-          contentStyle={{
-            backgroundColor: '#1E2433',
-            border: '1px solid #2D3343',
-            borderRadius: '6px',
-            color: '#E2E8F0'
-          }}
-          labelStyle={{ color: '#94A3B8' }}
-        />
-        <Legend 
-          wrapperStyle={{
-            color: '#94A3B8'
-          }}
-        />
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="day" />
+        <YAxis domain={[0, 100]} />
+        <Tooltip />
+        <Legend />
         <Line
           type="monotone"
           dataKey="safetyScore"
-          stroke="#2DD4BF"
+          stroke="#8884d8"
           name="Safety"
-          dot={{ fill: '#2DD4BF' }}
         />
         <Line
           type="monotone"
           dataKey="ecoScore"
-          stroke="#14B8A6"
+          stroke="#82ca9d"
           name="Eco Score"
-          dot={{ fill: '#14B8A6' }}
         />
         <Line
           type="monotone"
           dataKey="efficiency"
-          stroke="#0D9488"
+          stroke="#ffc658"
           name="Efficiency"
-          dot={{ fill: '#0D9488' }}
         />
       </LineChart>
     </div>
   );
 };
 
+// Using a simple bar-like visualization for skills since we can't use RadarChart
 export const DriverSkillsChart: React.FC<SkillsChartProps> = ({ data }) => {
   return (
     <div className="space-y-4">
       {data.map((skill) => (
         <div key={skill.skill} className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-300">{skill.skill}</span>
-            <span className="font-medium text-teal-400">{skill.score}%</span>
+            <span>{skill.skill}</span>
+            <span className="font-medium">{skill.score}%</span>
           </div>
-          <div className="w-full bg-[#1B1F2B] rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-teal-500 h-2 rounded-full transition-all duration-300"
+              className="bg-blue-500 h-2 rounded-full"
               style={{ width: `${skill.score}%` }}
             />
           </div>
